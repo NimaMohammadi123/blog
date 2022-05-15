@@ -1,0 +1,22 @@
+{% extends "blog/base.html" %}
+
+{% block content %}
+
+{% if query %}
+  <h1>posts for {{query}}</h1>
+  {% with results.count as total_result %}
+    <h3>{{total_result}} post available</h3>
+  {% endwith %}
+  {% for result in results %}
+    <p><a href="{{result.get_absolute_url}}">{{result.title}}</a></p>
+    <p>{{result.body}}</p>
+  {% endfor %}
+{% endif %}
+
+<form action="" method="GET">
+    {{form.as_p}}
+    <input type="submit" value="search">
+</form>
+
+
+{% endblock content %}

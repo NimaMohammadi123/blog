@@ -1,0 +1,52 @@
+{% extends "blog/base.html" %}
+
+{% load blog_tags %}
+
+{% block content %}
+
+<div>
+  <h3> {% total_post %} post available</h3>
+</div>
+
+<ul>
+  {% if tag %}
+    <h3>posts for : {{tag}}</h3> 
+  {% else %}
+   <h3>post list</h3>
+  {% endif %}
+  
+    {% for post in posts %}
+        <li>
+            <a href="{{post.get_absolute_url}}">{{post.title}}</a>
+        </li>
+    {% endfor %}
+</ul>  
+
+
+
+<!--pagination--> 
+  <nav aria-label="Page navigation example">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page=1">first page</a></li>
+      {% endif %}
+      {% for page in page_obj.paginator.page_range %}
+        <li class="page-item"><a class="page-link" href="?page={{page}}">{{page}}</a></li>
+      {% endfor %}
+      
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">last page</a></li>
+      {% endif %}
+      
+    </ul>
+  </nav>
+<!-- end pagination--> 
+
+<div>
+  <h3>latest post : </h3>{% show_latest_post %}
+</div>
+
+{% endblock content %}
+

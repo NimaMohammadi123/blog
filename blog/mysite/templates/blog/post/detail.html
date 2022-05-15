@@ -1,0 +1,42 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+<div>{{post.body|safe}}</div>
+<p>Tags :
+    {% for tag in post.tags.all %}
+      <a href="{% url 'blog:post_list' tag.slug %}">{{tag.name}}</a> -
+    {% endfor %}
+
+</p>
+<div>
+    <form method="POST">
+       {% csrf_token %}
+       {{form.as_p}}
+
+        <input type="submit" value="send comment">
+    </form>
+</div>
+<div>
+    <h3>same post</h3>
+    {% for post in same_tag %}
+      <a href="{{get_absloute_url}}">{{post.title}}</a>
+      <br/>
+      <hr/>
+    {% endfor %}
+</div>
+<div>
+    <h3>
+    {% with comment.count as number_comment %}
+       number of comment is :  {{number_comment}}
+    {% endwith %}
+    </h3>
+</div>
+<div>
+    {% for cm in comment %}
+      {{cm.name}} : {{cm.body}}
+      <hr>
+      <br/>
+    {% endfor %}
+</div>
+
+{% endblock content %}
