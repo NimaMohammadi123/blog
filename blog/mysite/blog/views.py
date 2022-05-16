@@ -13,7 +13,7 @@ from django.core.mail import send_mail
 
 
 def post_list(request,tag_slug=None):
-    posts = Post.objects.all().filter(status="published")
+    posts = Post.objects.filter(status="published")
     tag=None
     if tag_slug:
         tag = get_object_or_404(Tag,slug=tag_slug)
@@ -30,7 +30,7 @@ def post_list(request,tag_slug=None):
 
 
 #class PostListView(ListView):
-  #  queryset = Post.objects.all().filter(status="published")
+  #  queryset = Post.objects.filter(status="published")
    # paginate_by = 2
    # context_object_name ="posts"
   #  template_name = "blog/post/list.html"
@@ -41,7 +41,7 @@ def post_detail(request,year,month,day,post):
     comment_post =post.comment.filter(active=True)
     
     post_tag_id =post.tags.values_list('id',flat=True)
-    similar_post =Post.objects.all().filter(status ="published",tags__in=post_tag_id).exclude(id=post.id)
+    similar_post =Post.objects.filter(status ="published",tags__in=post_tag_id).exclude(id=post.id)
     similar_post=similar_post.annotate(same_tags=Count('tags')).order_by("-same_tags","publish")
     
     if request.method == 'POST':
